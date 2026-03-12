@@ -424,10 +424,14 @@
       display: flex;
       gap: 16px;
       overflow-x: auto;
-      padding: 20px 0 40px;
+      padding: 20px 16px 40px;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .screenshot-scroll::-webkit-scrollbar { display: none; }
@@ -436,7 +440,6 @@
       flex-shrink: 0;
       width: 260px;
       scroll-snap-align: center;
-      border-radius: 16px;
     }
 
     /* ===== IPAD SHOWCASE ===== */
@@ -584,11 +587,6 @@
       .phone-frame:nth-child(3) { width: 150px; }
 
       .cta-card { padding: 48px 24px; }
-
-      .screenshot-scroll {
-        margin: 0 -24px;
-        padding: 20px 16px 40px;
-      }
 
       .screenshot-scroll img { width: 200px; }
     }
@@ -750,32 +748,6 @@
       nav.classList.toggle('scrolled', window.scrollY > 40);
     });
 
-    // Auto-scroll screenshots carousel
-    const scroller = document.querySelector('.screenshot-scroll');
-    let paused = false;
-
-    function autoScroll() {
-      if (paused) return;
-      const img = scroller.querySelector('img');
-      const step = img.offsetWidth + 16; // width + gap
-      const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-      if (scroller.scrollLeft >= maxScroll - 2) {
-        scroller.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        scroller.scrollBy({ left: step, behavior: 'smooth' });
-      }
-    }
-
-    let scrollTimer = setInterval(autoScroll, 2800);
-
-    // Pause while user interacts
-    scroller.addEventListener('touchstart', () => { paused = true; }, { passive: true });
-    scroller.addEventListener('touchend', () => {
-      clearInterval(scrollTimer);
-      setTimeout(() => { paused = false; scrollTimer = setInterval(autoScroll, 2800); }, 3000);
-    }, { passive: true });
-    scroller.addEventListener('mouseenter', () => { paused = true; });
-    scroller.addEventListener('mouseleave', () => { paused = false; });
   </script>
 </body>
 </html>
